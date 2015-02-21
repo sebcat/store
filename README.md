@@ -1,17 +1,18 @@
-Store
-=====
-
-Yet another file backed element store, this time with more interfaces and consistency
-
-To avoid a lot of casting from store.Element on Store#Get, you should probably
-write a wrapper around this element store for each type you intend
-to use it for. 
-
-Pull requests welcome
-
-
+# store
+--
     import "github.com/sebcat/store"
 
+concurrency-safe file-backed element store
+
+    - Asynchronous writes (errors reported on next action)
+    - Optional cache with LRU eviction on either
+      store insertion or store retrieval
+
+To avoid a lot of casting from store.Element on Store#Get, you should probably
+write a wrapper around this element store for each type you intend to use it
+for.
+
+Pull requests welcome
 
 ## Usage
 
@@ -91,7 +92,7 @@ cache with LRU eviction policy
 ```go
 func NewLRUCache(size int) *LRUCache
 ```
-create a new cache
+create a new cache with room for 'size' elements
 
 #### func (*LRUCache) Cache
 

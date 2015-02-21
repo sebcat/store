@@ -1,12 +1,16 @@
+//
+// concurrency-safe file-backed element store
+//
+//   - Asynchronous writes (errors reported on next action)
+//   - Optional cache with LRU eviction on either
+//     store insertion or store retrieval
+//
+// To avoid a lot of casting from store.Element on Store#Get, you should probably
+// write a wrapper around this element store for each type you intend
+// to use it for.
+//
+// Pull requests welcome
 package store
-
-/*
-concurrency-safe file-backed element store
-
-  - Asynchronous writes (errors reported on next action)
-  - Optional cache with LRU eviction on either
-    store insertion or store retrieval
-*/
 
 import (
 	"container/list"
@@ -54,7 +58,7 @@ type LRUCache struct {
 	size  int
 }
 
-// create a new cache
+// create a new cache with room for 'size' elements
 func NewLRUCache(size int) *LRUCache {
 	if size <= 0 {
 		return nil
