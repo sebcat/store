@@ -27,7 +27,10 @@ var (
 
 ```go
 type Cache interface {
+	// update (insert, promote) an element in the cache
 	Cache(Element)
+
+	// retrieve an Element from the cache, or nil if non-existant
 	Get(id ElementID) Element
 }
 ```
@@ -52,7 +55,10 @@ const (
 
 ```go
 type Element interface {
+	// load an element from a reader
 	Load(io.Reader) error
+
+	// store an element to a writer
 	Store(io.Writer) error
 
 	// must return a file-system safe ID
@@ -99,7 +105,6 @@ create a new cache with room for 'size' elements
 ```go
 func (l *LRUCache) Cache(el Element)
 ```
-update (insert, promote) an element in the cache
 
 #### func (*LRUCache) Get
 

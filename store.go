@@ -34,7 +34,10 @@ func (id ElementID) String() string {
 }
 
 type Element interface {
+	// load an element from a reader
 	Load(io.Reader) error
+
+	// store an element to a writer
 	Store(io.Writer) error
 
 	// must return a file-system safe ID
@@ -46,7 +49,10 @@ type Element interface {
 }
 
 type Cache interface {
+	// update (insert, promote) an element in the cache
 	Cache(Element)
+
+	// retrieve an Element from the cache, or nil if non-existant
 	Get(id ElementID) Element
 }
 
@@ -71,7 +77,6 @@ func NewLRUCache(size int) *LRUCache {
 	}
 }
 
-// update (insert, promote) an element in the cache
 func (l *LRUCache) Cache(el Element) {
 	// how cache with LRU eviction works:
 	//
