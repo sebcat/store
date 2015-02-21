@@ -123,7 +123,7 @@ func BenchmarkLRURetrieval(b *testing.B) {
 	}
 }
 
-func TestStoreRetrieveNonExistant(t *testing.T) {
+func TestRetrieveNonExistant(t *testing.T) {
 	s, err := New(TestPath)
 	if err != nil {
 		t.Fatal(err)
@@ -137,7 +137,7 @@ func TestStoreRetrieveNonExistant(t *testing.T) {
 	}
 }
 
-func TestStoreDuplicateInsertion(t *testing.T) {
+func TestDuplicateInsertion(t *testing.T) {
 	s, err := New(TestPath)
 	if err != nil {
 		t.Fatal(err)
@@ -156,7 +156,7 @@ func TestStoreDuplicateInsertion(t *testing.T) {
 
 }
 
-func TestStoreConcurrentDuplicateInsertion(t *testing.T) {
+func TestConcurrentDuplicateInsertion(t *testing.T) {
 	var err1, err2 error
 
 	s, err := New(TestPath)
@@ -189,7 +189,7 @@ func TestStoreConcurrentDuplicateInsertion(t *testing.T) {
 	}
 }
 
-func testStorePut(t *testing.T, midSync bool, cacheMode CacheMode, cacheSize, nelems int) {
+func testPut(t *testing.T, midSync bool, cacheMode CacheMode, cacheSize, nelems int) {
 	s, err := New(TestPath)
 	if err != nil {
 		t.Fatal(err)
@@ -232,62 +232,62 @@ func testStorePut(t *testing.T, midSync bool, cacheMode CacheMode, cacheSize, ne
 	s.Sync()
 }
 
-func TestStorePut(t *testing.T) {
+func TestPut(t *testing.T) {
 	// don't sync, don't cache, one element
-	testStorePut(t, false, 0, 0, 1)
+	testPut(t, false, 0, 0, 1)
 }
 
-func TestStorePutSync(t *testing.T) {
+func TestPutSync(t *testing.T) {
 	// sync, don't cache, one element
-	testStorePut(t, true, 0, 0, 1)
+	testPut(t, true, 0, 0, 1)
 }
 
-func TestStorePutMultiple(t *testing.T) {
+func TestPutMultiple(t *testing.T) {
 	// don't sync, don't cache, three elements
-	testStorePut(t, false, 0, 0, 3)
+	testPut(t, false, 0, 0, 3)
 }
 
-func TestStorePutSyncMultiple(t *testing.T) {
+func TestPutSyncMultiple(t *testing.T) {
 	// sync, don't cache, three elements
-	testStorePut(t, true, 0, 0, 3)
+	testPut(t, true, 0, 0, 3)
 }
 
-func TestStorePutSmallCache(t *testing.T) {
+func TestPutSmallCache(t *testing.T) {
 	// don't sync, cache, one element
-	testStorePut(t, false, CacheOnGet|CacheOnPut, 1, 1)
+	testPut(t, false, CacheOnGet|CacheOnPut, 1, 1)
 }
 
-func TestStorePutSyncSmallCache(t *testing.T) {
+func TestPutSyncSmallCache(t *testing.T) {
 	// sync, cache, one element
-	testStorePut(t, true, CacheOnGet|CacheOnPut, 1, 1)
+	testPut(t, true, CacheOnGet|CacheOnPut, 1, 1)
 }
 
-func TestStorePutMultipleSmallCache(t *testing.T) {
+func TestPutMultipleSmallCache(t *testing.T) {
 	// don't sync, cache, three elements
-	testStorePut(t, false, CacheOnGet|CacheOnPut, 1, 3)
+	testPut(t, false, CacheOnGet|CacheOnPut, 1, 3)
 }
 
-func TestStorePutSyncMultipleSmallCache(t *testing.T) {
+func TestPutSyncMultipleSmallCache(t *testing.T) {
 	// sync, cache, three elements
-	testStorePut(t, true, CacheOnGet|CacheOnPut, 1, 3)
+	testPut(t, true, CacheOnGet|CacheOnPut, 1, 3)
 }
 
-func TestStorePutLargeCache(t *testing.T) {
+func TestPutLargeCache(t *testing.T) {
 	// don't sync, cache, one element
-	testStorePut(t, false, CacheOnGet|CacheOnPut, 4, 1)
+	testPut(t, false, CacheOnGet|CacheOnPut, 4, 1)
 }
 
-func TestStorePutSyncLargeCache(t *testing.T) {
+func TestPutSyncLargeCache(t *testing.T) {
 	// sync, cache, one element
-	testStorePut(t, true, CacheOnGet|CacheOnPut, 4, 1)
+	testPut(t, true, CacheOnGet|CacheOnPut, 4, 1)
 }
 
-func TestStorePutMultipleLargeCache(t *testing.T) {
+func TestPutMultipleLargeCache(t *testing.T) {
 	// don't sync,cache, three elements
-	testStorePut(t, false, CacheOnGet|CacheOnPut, 4, 3)
+	testPut(t, false, CacheOnGet|CacheOnPut, 4, 3)
 }
 
-func TestStorePutSyncMultipleLargeCache(t *testing.T) {
+func TestPutSyncMultipleLargeCache(t *testing.T) {
 	// sync, cache, three elements
-	testStorePut(t, true, CacheOnGet|CacheOnPut, 4, 3)
+	testPut(t, true, CacheOnGet|CacheOnPut, 4, 3)
 }
