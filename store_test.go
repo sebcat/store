@@ -153,7 +153,38 @@ func TestDuplicateInsertion(t *testing.T) {
 	if err := s.Put(elem); err != ErrAlreadyExists {
 		t.Fatal("expected ErrAlreadyExists, got", err)
 	}
+}
 
+func TestPersistency(t *testing.T) {
+	s, err := New(TestPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	elem := &TestElems[0]
+	if err := s.Put(elem); err != nil {
+		s.Remove()
+		t.Fatal(err)
+	}
+
+	s.Sync()
+	retElem := &TestElement{ElementID: elem.ElementID}
+	news, err := New(TestPath)
+	if err != nil {
+		s.Remove()
+		t.Fatal(err)
+	}
+
+	defer news.Remove()
+	el, err := s.Get(retElem)
+	if err != nil {
+		news.Remove()
+		t.Fatal(err)
+	}
+
+	if el == nil || el.(*TestElement).Data != TestElems[0].Data {
+		t.Fatal("unexpected value: ", el)
+	}
 }
 
 func TestConcurrentDuplicateInsertion(t *testing.T) {

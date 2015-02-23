@@ -33,6 +33,15 @@ func (id ElementID) String() string {
 	return strconv.FormatUint(uint64(id), 36)
 }
 
+func (id *ElementID) FromString(str string) error {
+	n, err := strconv.ParseUint(str, 36, 64)
+	if err != nil {
+		return err
+	}
+	*id = ElementID(n)
+	return nil
+}
+
 type Element interface {
 	// load an element from a reader
 	Load(io.Reader) error
@@ -77,6 +86,7 @@ func NewLRUCache(size int) *LRUCache {
 	}
 }
 
+// update (insert, promote) an element in the cache
 func (l *LRUCache) Cache(el Element) {
 	// how cache with LRU eviction works:
 	//
@@ -177,6 +187,23 @@ func New(path string) (*Store, error) {
 		path:      filepath.Clean(path),
 		inventory: make(map[ElementID]struct{}),
 		inMem:     make(map[ElementID]Element),
+	}
+
+	walker := func(path string, info os.FileInfo, err error) error {
+		if err == nil && info.Mode().IsRegular() {
+			var id ElementID
+			if err := id.FromString(info.Name()); err == nil {
+				var x struct{}
+				s.inventory[id] = x
+
+			}
+		}
+
+		return nil
+	}
+
+	if err := filepath.Walk(s.path, walker); err != nil {
+		return nil, err
 	}
 
 	return s, nil
