@@ -189,6 +189,7 @@ func New(path string) (*Store, error) {
 		inMem:     make(map[ElementID]Element),
 	}
 
+	os.MkdirAll(s.path, 0700)
 	walker := func(path string, info os.FileInfo, err error) error {
 		if err == nil && info.Mode().IsRegular() {
 			var id ElementID
@@ -199,7 +200,7 @@ func New(path string) (*Store, error) {
 			}
 		}
 
-		return nil
+		return err
 	}
 
 	if err := filepath.Walk(s.path, walker); err != nil {

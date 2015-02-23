@@ -155,6 +155,13 @@ func TestDuplicateInsertion(t *testing.T) {
 	}
 }
 
+func TestInvalidDirectory(t *testing.T) {
+	_, err := New("/dev/null/tro/lolo/lo")
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+}
+
 func TestPersistency(t *testing.T) {
 	s, err := New(TestPath)
 	if err != nil {
