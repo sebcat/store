@@ -78,6 +78,12 @@ type ElementID uint64
 ```
 
 
+#### func (*ElementID) FromString
+
+```go
+func (id *ElementID) FromString(str string) error
+```
+
 #### func (ElementID) String
 
 ```go
@@ -105,6 +111,7 @@ create a new cache with room for 'size' elements
 ```go
 func (l *LRUCache) Cache(el Element)
 ```
+update (insert, promote) an element in the cache
 
 #### func (*LRUCache) Get
 
