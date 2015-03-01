@@ -316,8 +316,11 @@ func (s Store) put(el Element) error {
 		return err
 	}
 
-	defer fh.Close()
-	return el.Store(fh)
+	if err := el.Store(fh); err != nil {
+		return err
+	}
+
+	return fh.Close()
 }
 
 func (s *Store) Put(el Element) error {
